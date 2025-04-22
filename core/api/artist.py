@@ -53,18 +53,23 @@ def get_urls(a, s, m, name):
     table.add_column("Kind", justify="center")
     table.add_column("Count", justify="center")
 
-    table.add_row('0', 'albums', str(len(a)))
-    table.add_row('1', 'singles', str(len(s)))
-    table.add_row('2', 'music-videos', str(len(m)))
-    
+    groups = [(idx, kind, data) for idx, (kind, data) in enumerate([
+        ('albums', a),
+        ('singles', s),
+        ('music-videos', m)
+    ]) if len(data) > 0]
+
+    for idx, (kind, data) in enumerate([(group[1], group[2]) for group in groups]):
+        table.add_row(str(idx), kind, str(len(data)))
+
     print()
     columns = Columns(["       ", table])
     console.print(columns)
     id = input("\n\t Enter ID: ")
     print()
-    
+
     if id == "": logger.error("Please enter an ID to continue!", 1)
-    elif id == "all": id = [0, 1, 2]
+    elif id == "all": id = [i for i in range(len(groups))]
     else:
         try: id = [int(id.strip()) for id in id.split(',')]
         except: logger.error("Input is invalid!", 1)
@@ -73,16 +78,17 @@ def get_urls(a, s, m, name):
     contents = []
 
     for i in id:
-        if i in [0, 1, 2]:
-            if i == 0:
+        if i in range(len(groups)):
+            kind, data = groups[i][1], groups[i][2]
+            if kind == 'albums':
                 logger.info(f"Getting {name}'s full-albums...")
-                contents += __user(a)
-            elif i == 1:
+                contents += __user(data)
+            elif kind == 'singles':
                 logger.info(f"Getting {name}'s singles...")
-                contents += __user(s)
-            else:
+                contents += __user(data)
+            elif kind == 'music-videos':
                 logger.info(f"Getting {name}'s music-videos...")
-                contents += __user(m)
+                contents += __user(data)
         else:
             logger.warning(f'ID: {i} not in the list!')
 
