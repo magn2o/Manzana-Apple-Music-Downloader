@@ -173,19 +173,23 @@ class AppleMusic:
                 r = session.get(apiUrl)
                 r = json.loads(r.text)
 
-                for item in r["data"]:
-                    name = item["attributes"]["name"]
-                    if " - EP" in name: name = name.replace(" - EP", "") + " [EP]"
-                    if " - Single" in name: name = name.replace(" - Single", "") + " [S]"
-                    if item["attributes"].get("contentRating"): name += " [E]"
+                if "data" in r:
+                    for item in r["data"]:
+                        name = item["attributes"]["name"]
+                        if " - EP" in name: name = name.replace(" - EP", "") + " [EP]"
+                        if " - Single" in name: name = name.replace(" - Single", "") + " [S]"
+                        if item["attributes"].get("contentRating"): name += " [E]"
 
-                    urls.append(
-                        {
-                            "url": item["attributes"].get("url"),
-                            "name": name,
-                            "contentId": item["id"]
-                        }
-                    )
+                        urls.append(
+                            {
+                                "url": item["attributes"].get("url"),
+                                "name": name,
+                                "contentId": item["id"]
+                            }
+                        )
+                elif "errors" in r:
+                    for item in r["errors"]:
+                        logger.debug(item["detail"])
 
                 if "next" in r:
                     nextUrl = r["next"]
