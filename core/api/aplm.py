@@ -232,6 +232,14 @@ class AppleMusic:
             ),
             __get_res(
                 self.session,
+                f"https://amp-api.music.apple.com/v1/catalog/{self.storefront}/artists/{id}/view/live-albums?limit=100"
+            ),
+            __get_res(
+                self.session,
+                f"https://amp-api.music.apple.com/v1/catalog/{self.storefront}/artists/{id}/view/compilation-albums?limit=100"
+            ),
+            __get_res(
+                self.session,
                 f"https://amp-api.music.apple.com/v1/catalog/{self.storefront}/artists/{id}/view/music-videos?limit=100"
             ),
             name

@@ -44,7 +44,7 @@ def __user(contents: list):
 
         return returnContent
 
-def get_urls(a, s, m, name):
+def get_urls(a, s, l, c, m, name):
     table = Table(
         box=box.ROUNDED
     )
@@ -56,6 +56,8 @@ def get_urls(a, s, m, name):
     groups = [(idx, kind, data) for idx, (kind, data) in enumerate([
         ('albums', a),
         ('singles', s),
+        ('live', l),
+        ('compilations', c),
         ('music-videos', m)
     ]) if len(data) > 0]
 
@@ -85,6 +87,12 @@ def get_urls(a, s, m, name):
                 contents += __user(data)
             elif kind == 'singles':
                 logger.info(f"Getting {name}'s singles...")
+                contents += __user(data)
+            elif kind == 'live':
+                logger.info(f"Getting {name}'s live-albums...")
+                contents += __user(data)
+            elif kind == 'compilations':
+                logger.info(f"Getting {name}'s compilation-albums...")
                 contents += __user(data)
             elif kind == 'music-videos':
                 logger.info(f"Getting {name}'s music-videos...")
