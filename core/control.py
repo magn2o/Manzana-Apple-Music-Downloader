@@ -1,6 +1,7 @@
 import os
 import m3u8
 import requests
+import shutil
 
 from rich.console import Console
 
@@ -259,7 +260,7 @@ def run(args):
                         else: logger.info("Audio is already tagged!")
 
                         if os.path.exists(__mux_fp):
-                            os.renames(__mux_fp, __out_fp)
+                            shutil.move(__mux_fp, __out_fp)
 
                     else:
                         st = stats.get(track["id"])
@@ -407,7 +408,7 @@ def run(args):
                         else: logger.info("Music-video is already tagged!")
 
                         if os.path.exists(__mux_fp):
-                            os.renames(__mux_fp, __out_fp)
+                            shutil.move(__mux_fp, __out_fp)
 
                 if not args.noCover:
                     if aplm.kind != "music-video":
