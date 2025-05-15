@@ -370,8 +370,6 @@ class AppleMusic:
         return r.get("license")
     
     def __get_song_keys(self, songId, keyUri):
-        cert_data_b64 = self.__get_license(songId, keyUri)
-
         dataPSSH = WidevinePsshData()
         dataPSSH.algorithm = 1
         dataPSSH.key_id.append(b64decode(keyUri.split(",")[1]))
@@ -380,7 +378,7 @@ class AppleMusic:
 
         widevine = Widevine(
             init_data=pssh,
-            cert_data=cert_data_b64,
+            cert_data=None,
             device_name=config.get('deviceName'),
             device_path=config.get('devicePath')
         )
